@@ -1,7 +1,7 @@
 {
-  "name": "HKD to VND Converter",
-  "short_name": "HKD→VND",
-  "description": "Convert Hong Kong Dollar to Vietnamese Dong",
+  "name": "Currency Converter",
+  "short_name": "Exchange",
+  "description": "Convert Currency",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#c0392b",
