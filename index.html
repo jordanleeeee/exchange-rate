@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1b4f8a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Currency" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <div class="currency-row">
+      <div class="currency-select-wrap">
+        <select id="from-select" onchange="onCurrencyChange()"></select>
+      </div>
+      <button class="swap-btn" id="swap-btn" onclick="swap()" title="Swap">⇄</button>
+      <div class="currency-select-wrap">
+        <select id="to-select" onchange="onCurrencyChange()"></select>
+      </div>
+    </div>
+
+    <p class="rate-label" id="rate-label">Fetching live rate...</p>
+
+    <label id="input-label">Amount</label>
+    <div class="input-wrap">
+      <span class="currency-tag" id="input-symbol"></span>
+      <input
+        type="number"
+        id="amount"
+        placeholder="0"
+        min="0"
+        step="any"
+        autofocus
+        inputmode="decimal"
+      />
+    </div>
+
+    <div class="divider">▼</div>
+
+    <label id="output-label">Result</label>
+    <div class="result-box">
+      <span class="currency-tag" id="output-symbol"></span>
+      <div class="result-value empty" id="result">Enter an amount</div>
+    </div>
+
+    <button class="reset-btn" onclick="reset()">Clear</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
