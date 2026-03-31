@@ -4,8 +4,8 @@
   "description": "Convert Currency",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#c0392b",
-  "theme_color": "#c0392b",
+  "background_color": "#1b4f8a",
+  "theme_color": "#1b4f8a",
   "orientation": "portrait",
   "icons": [
     {
