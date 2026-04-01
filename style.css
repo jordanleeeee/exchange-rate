@@ -13,10 +13,46 @@ body {
 .card {
   background: white;
   border-radius: 20px;
-  padding: 40px 32px;
+  padding: 48px 32px 40px;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.offline-badge {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f39c12;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(243,156,18,0.4);
+}
+
+.offline-badge[hidden] {
+  display: none;
+}
+
+.offline-dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .currency-row {
@@ -105,7 +141,7 @@ label {
 
 input[type="number"] {
   width: 100%;
-  padding: 16px 16px 16px 62px;
+  padding: 16px 50px 16px 62px;
   font-size: 1.4rem;
   font-weight: 600;
   border: 2px solid #e0e0e0;
@@ -120,6 +156,19 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
 input[type="number"]:focus { border-color: #2171c7; }
+
+.auto-zero-suffix {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2171c7;
+  pointer-events: none;
+}
+
+.auto-zero-suffix[hidden] { display: none; }
 
 .divider {
   display: flex;

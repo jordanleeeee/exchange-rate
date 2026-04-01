@@ -1,7 +1,7 @@
 const CURRENCIES = [
   { code: 'HKD', flag: '🇭🇰', symbol: 'HK$',   name: 'HK Dollar',         decimals: 2 },
-  { code: 'VND', flag: '🇻🇳', symbol: '₫',      name: 'Vietnamese Dong',   decimals: 0 },
-  { code: 'KRW', flag: '🇰🇷', symbol: '₩',      name: 'Korean Won',        decimals: 0 },
+  { code: 'VND', flag: '🇻🇳', symbol: '₫',      name: 'Vietnamese Dong',   decimals: 0, autoZero: true },
+  { code: 'KRW', flag: '🇰🇷', symbol: '₩',      name: 'Korean Won',        decimals: 0, autoZero: true },
   { code: 'USD', flag: '🇺🇸', symbol: '$',       name: 'US Dollar',         decimals: 2 },
   { code: 'CNY', flag: '🇨🇳', symbol: '¥',       name: 'Chinese Yuan',      decimals: 2 },
   { code: 'TWD', flag: '🇹🇼', symbol: 'NT$',     name: 'Taiwan Dollar',     decimals: 2 },
@@ -22,6 +22,7 @@ let rateDate = null;
 let fromCode = localStorage.getItem('fromCode') || 'HKD';
 let toCode   = localStorage.getItem('toCode')   || 'VND';
 let swapFlipped = false;
+let actualValue = 0;
 
 const amountInput = document.getElementById('amount');
 const resultEl    = document.getElementById('result');
@@ -44,6 +45,7 @@ CURRENCIES.forEach(c => {
 
 async function fetchRates() {
   const rateLabel = document.getElementById('rate-label');
+  const offlineBadge = document.getElementById('offline-badge');
   try {
     const res  = await fetch('https://open.er-api.com/v6/latest/HKD');
     const data = await res.json();
@@ -52,11 +54,13 @@ async function fetchRates() {
     rateDate = data.time_last_update_utc
       ? new Date(data.time_last_update_utc).toISOString().slice(0, 10)
       : '';
+    offlineBadge.hidden = true;
     updateRateLabel();
     convert();
   } catch {
     rates    = { ...FALLBACK };
     rateDate = null;
+    offlineBadge.hidden = false;
     updateRateLabel();
   }
 }
@@ -67,18 +71,18 @@ function getCurrency(code) {
 
 function updateRateLabel() {
   const rateLabel = document.getElementById('rate-label');
-  const r = rates[toCode] / rates[fromCode];
   const to = getCurrency(toCode);
+  const from = getCurrency(fromCode);
+  const r = rates[toCode] / rates[fromCode];
   const formatted = r.toLocaleString('en-US', {
     minimumFractionDigits: to.decimals,
     maximumFractionDigits: to.decimals > 0 ? to.decimals + 2 : 2,
   });
   const tag = rateDate ? `live · ${rateDate}` : 'fallback';
-  rateLabel.textContent = `1 ${fromCode} = ${formatted} ${toCode} (${tag})`;
-
-  const from = getCurrency(fromCode);
+  document.getElementById('auto-zero-suffix').hidden = !from.autoZero;
   document.getElementById('input-label').textContent   = `Amount in ${fromCode}`;
   document.getElementById('input-symbol').textContent  = from.symbol;
+  rateLabel.textContent = `1 ${fromCode} = ${formatted} ${toCode} (${tag})`;
   document.getElementById('output-label').textContent  = `Amount in ${toCode}`;
   document.getElementById('output-symbol').textContent = to.symbol;
   document.title = `${fromCode} ↔ ${toCode}`;
@@ -86,14 +90,14 @@ function updateRateLabel() {
 
 function convert() {
   if (!rates) return;
-  const val = parseFloat(amountInput.value);
-  if (isNaN(val) || amountInput.value === '') {
+  if (actualValue <= 0) {
     resultEl.textContent = 'Enter an amount';
     resultEl.classList.add('empty');
     return;
   }
+  const from = getCurrency(fromCode);
   const to = getCurrency(toCode);
-  const converted = val * (rates[toCode] / rates[fromCode]);
+  const converted = actualValue * (rates[toCode] / rates[fromCode]);
   resultEl.textContent = converted.toLocaleString('en-US', {
     minimumFractionDigits: to.decimals,
     maximumFractionDigits: to.decimals,
@@ -106,8 +110,12 @@ function onCurrencyChange() {
   toCode   = toSelect.value;
   localStorage.setItem('fromCode', fromCode);
   localStorage.setItem('toCode',   toCode);
+  amountInput.value = '';
+  actualValue = 0;
+  resultEl.textContent = 'Enter an amount';
+  resultEl.classList.add('empty');
   updateRateLabel();
-  convert();
+  amountInput.focus();
 }
 
 function swap() {
@@ -120,6 +128,7 @@ function swap() {
   swapBtn.classList.toggle('flipped', swapFlipped);
   updateRateLabel();
   amountInput.value = '';
+  actualValue = 0;
   resultEl.textContent = 'Enter an amount';
   resultEl.classList.add('empty');
   amountInput.focus();
@@ -127,12 +136,18 @@ function swap() {
 
 function reset() {
   amountInput.value = '';
+  actualValue = 0;
   resultEl.textContent = 'Enter an amount';
   resultEl.classList.add('empty');
   amountInput.focus();
 }
 
-amountInput.addEventListener('input', convert);
+amountInput.addEventListener('input', () => {
+  const from = getCurrency(fromCode);
+  const displayVal = parseFloat(amountInput.value) || 0;
+  actualValue = from.autoZero ? displayVal * 1000 : displayVal;
+  convert();
+});
 fetchRates();
 
 if ('serviceWorker' in navigator) {

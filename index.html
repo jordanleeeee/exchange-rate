@@ -14,6 +14,10 @@
 </head>
 <body>
   <div class="card">
+    <div class="offline-badge" id="offline-badge" hidden>
+      <span class="offline-dot"></span>
+      <span>Offline — using cached rates</span>
+    </div>
     <div class="currency-row">
       <div class="currency-select-wrap">
         <select id="from-select" onchange="onCurrencyChange()"></select>
@@ -38,6 +42,7 @@
         autofocus
         inputmode="decimal"
       />
+      <span class="auto-zero-suffix" id="auto-zero-suffix" hidden>000</span>
     </div>
 
     <div class="divider">▼</div>
