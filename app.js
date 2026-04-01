@@ -1,16 +1,21 @@
 const CURRENCIES = [
-  { code: 'HKD', flag: '🇭🇰', symbol: 'HK$',  name: 'HK Dollar',        decimals: 2 },
-  { code: 'VND', flag: '🇻🇳', symbol: '₫',     name: 'Vietnamese Dong',  decimals: 0 },
-  { code: 'KRW', flag: '🇰🇷', symbol: '₩',     name: 'Korean Won',       decimals: 0 },
-  { code: 'USD', flag: '🇺🇸', symbol: '$',      name: 'US Dollar',        decimals: 2 },
-  { code: 'CNY', flag: '🇨🇳', symbol: '¥',      name: 'Chinese Yuan',     decimals: 2 },
-  { code: 'TWD', flag: '🇹🇼', symbol: 'NT$',    name: 'Taiwan Dollar',    decimals: 2 },
-  { code: 'SGD', flag: '🇸🇬', symbol: 'S$',     name: 'Singapore Dollar', decimals: 2 },
-  { code: 'MYR', flag: '🇲🇾', symbol: 'RM',     name: 'Malaysian Ringgit',decimals: 2 },
+  { code: 'HKD', flag: '🇭🇰', symbol: 'HK$',   name: 'HK Dollar',         decimals: 2 },
+  { code: 'VND', flag: '🇻🇳', symbol: '₫',      name: 'Vietnamese Dong',   decimals: 0 },
+  { code: 'KRW', flag: '🇰🇷', symbol: '₩',      name: 'Korean Won',        decimals: 0 },
+  { code: 'USD', flag: '🇺🇸', symbol: '$',       name: 'US Dollar',         decimals: 2 },
+  { code: 'CNY', flag: '🇨🇳', symbol: '¥',       name: 'Chinese Yuan',      decimals: 2 },
+  { code: 'TWD', flag: '🇹🇼', symbol: 'NT$',     name: 'Taiwan Dollar',     decimals: 2 },
+  { code: 'SGD', flag: '🇸🇬', symbol: 'S$',      name: 'Singapore Dollar',  decimals: 2 },
+  { code: 'MYR', flag: '🇲🇾', symbol: 'RM',      name: 'Malaysian Ringgit', decimals: 2 },
+  { code: 'EUR', flag: '🇪🇺', symbol: '€',       name: 'Euro',              decimals: 2 },
+  { code: 'JPY', flag: '🇯🇵', symbol: '¥',       name: 'Japanese Yen',      decimals: 0 },
+  { code: 'GBP', flag: '🇬🇧', symbol: '£',       name: 'British Pound',     decimals: 2 },
+  { code: 'AUD', flag: '🇦🇺', symbol: 'A$',      name: 'Australian Dollar', decimals: 2 },
+  { code: 'CAD', flag: '🇨🇦', symbol: 'C$',      name: 'Canadian Dollar',   decimals: 2 },
 ];
 
 // Fallback rates relative to HKD (1 HKD = X)
-const FALLBACK = { HKD:1, VND:3357.42, KRW:185.2, USD:0.1282, CNY:0.929, TWD:4.19, SGD:0.172, MYR:0.570 };
+const FALLBACK = { HKD:1, VND:3357.42, KRW:185.2, USD:0.1282, CNY:0.929, TWD:4.19, SGD:0.172, MYR:0.570, EUR:0.118, JPY:19.15, GBP:0.102, AUD:0.195, CAD:0.175 };
 
 let rates = null;
 let rateDate = null;
